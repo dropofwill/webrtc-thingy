@@ -1,7 +1,9 @@
 import Peer from 'peerjs';
 import { v4 } from 'uuid';
 
-const peerHost = new Peer(v4());
+const id = v4()
+console.log(id)
+const peerHost = new Peer(id);
 
 function connect(hostPeer, clientPeerId) {
   const conn = hostPeer.connect(clientPeerId);
