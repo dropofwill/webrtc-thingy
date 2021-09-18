@@ -1,6 +1,6 @@
 const express = require('express')
 const process = require('process')
-const port = 3000
+const port = 8080;
 
 const app = express()
 app.use(express.static('client/dist'));
@@ -9,7 +9,6 @@ const alphabet = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789∆Λ';
 const roomRegistry = {}
 
 function toJson(room) {
-  console.log(room)
   return JSON.stringify({
     roomId: room.roomId,
     hostPeerId: room['hostPeerId'],
@@ -30,8 +29,6 @@ function createRoomId() {
 }
 
 app.post('/rooms', express.json(), (req, res) => {
-  console.log(req.body)
-
   const hostPeerId = req.body['hostPeerId'];
   const newRoomId = createRoomId();
 
@@ -40,8 +37,6 @@ app.post('/rooms', express.json(), (req, res) => {
     hostPeerId: hostPeerId,
     peers: new Set()
   };
-
-  console.log(roomRegistry);
 
   res.send(toJson(roomRegistry[newRoomId]));
 });
@@ -52,7 +47,6 @@ app.post('/rooms/:roomId/peers/:peerId', (req, res) => {
 
   if (roomRegistry[roomId] != null) {
     roomRegistry[roomId].peers.add(peerId)
-    console.log(roomRegistry[roomId])
     res.send(toJson(roomRegistry[roomId]));
   } else {
     res.send(404);
