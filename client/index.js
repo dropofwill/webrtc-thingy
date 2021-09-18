@@ -1,22 +1,25 @@
 import Peer from 'peerjs';
+import { v4 } from 'uuid';
 
-console.log("hello");
-const id1 = '1-will';
-const id2 = '2-will';
+const peer = new Peer(v4());
 
-const peer1 = new Peer(id1);
-const peer2 = new Peer(id2);
+if (window.location.hash != '') {
+  console.log(window.location.hash);
+  const url = '/rooms/' + 
+    window.location.hash.replace('#', '') + 
+    '/peers/' + peer.id;
+  console.log(url);
 
-const conn = peer1.connect(id2);
-conn.on('open', () => {
-  conn.send('hi!');
-});
+  fetch(url, { method: 'POST' })
+}
 
-peer2.on('connection', (conn) => {
+peer.on('connection', (conn) => {
+
   conn.on('data', (data) => {
-    // Will print 'hi!'
     console.log(data);
+    document.querySelector('body').innerHTML = data
   });
+
   conn.on('open', () => {
     conn.send('hello!');
   });
