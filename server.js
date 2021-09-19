@@ -1,9 +1,11 @@
 const express = require('express')
 const process = require('process')
+const cors = require('cors');
 const port = 8080;
 
 const app = express()
 app.use(express.static('client/dist'));
+app.use(cors())
 
 const alphabet = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789∆Λ';
 const roomRegistry = {}
