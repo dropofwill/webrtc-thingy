@@ -43,6 +43,18 @@ app.post('/rooms', express.json(), (req, res) => {
   res.send(toJson(roomRegistry[newRoomId]));
 });
 
+app.post('/rooms/:roomId/peers/', express.json(), (req, res) => {
+  const roomId = req.params['roomId'];
+  const peerId = req.params['peerId'];
+
+  if (roomRegistry[roomId] != null) {
+    roomRegistry[roomId].peers.add(req.body)
+    res.send(toJson(roomRegistry[roomId]));
+  } else {
+    res.send(404);
+  }
+});
+
 app.post('/rooms/:roomId/peers/:peerId', (req, res) => {
   const roomId = req.params['roomId'];
   const peerId = req.params['peerId'];
