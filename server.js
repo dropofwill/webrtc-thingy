@@ -7,7 +7,7 @@ const app = express()
 app.use(express.static('client/dist'));
 app.use(cors())
 
-const alphabet = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789∆Λ';
+const alphabet = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
 const roomRegistry = {}
 
 function toJson(room) {
@@ -45,7 +45,8 @@ app.post('/rooms', express.json(), (req, res) => {
 
 app.post('/rooms/:roomId/peers/', express.json(), (req, res) => {
   const roomId = req.params['roomId'];
-  const peerId = req.params['peerId'];
+  console.log(req)
+  console.log(req.body)
 
   if (roomRegistry[roomId] != null) {
     roomRegistry[roomId].peers.add(req.body)
