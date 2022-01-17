@@ -1,26 +1,48 @@
-import Peer from 'peerjs';
 import { v4 } from 'uuid';
 
-const peer = new Peer(v4());
+const peerId = v4();
 
 if (window.location.hash != '') {
   console.log(window.location.hash);
-  const url = '/rooms/' + 
-    window.location.hash.replace('#', '') + 
-    '/peers/' + peer.id;
-  console.log(url);
+  const roomId = window.location.hash.replace('#', '');
+  const ws = new WebSocket('ws://localhost:8888');
 
-  fetch(url, { method: 'POST' })
+  ws.addEventListener('open', function open() {
+    ws.send(JSON.stringify({
+      "type": "join",
+      "roomId": roomId,
+      "peerId": peerId,
+      "message": "connect from client"
+    }));
+
+    document.addEventListener("click", () => {
+      ws.send(JSON.stringify({
+        "type": "event",
+        "roomId": roomId,
+        "message": "button clicked"
+      }));
+    });
+  });
+
+  ws.addEventListener('message', function message(e) {
+    console.log('received: %s', e.data);
+    let d = e.data
+    document.querySelector('#responses').innerHTML =
+      d["roomId"] + " ∆ " + d["message"]
+  });
+} else {
+  document.querySelector('#responses').innerHTML =
+    "add a room code hash to the url and refresh, e.g. #GHF"
 }
 
-peer.on('connection', (conn) => {
-
-  conn.on('data', (data) => {
-    console.log(data);
-    document.querySelector('body').innerHTML = data
-  });
-
-  conn.on('open', () => {
-    conn.send('hello!');
-  });
-});
+// peer.on('connection', (conn) => {
+//
+//   conn.on('data', (data) => {
+//     console.log(data);
+//     document.querySelector('body').innerHTML = data
+//   });
+//
+//   conn.on('open', () => {
+//     conn.send('hello!');
+//   });
+// });
