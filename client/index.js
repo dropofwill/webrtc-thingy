@@ -5,7 +5,7 @@ const peerId = v4();
 if (window.location.hash != '') {
   console.log(window.location.hash);
   const roomId = window.location.hash.replace('#', '');
-  const ws = new WebSocket('ws://localhost:8888');
+  const ws = new WebSocket('wss://' + window.location.host);
 
   ws.addEventListener('open', function open() {
     ws.send(JSON.stringify({

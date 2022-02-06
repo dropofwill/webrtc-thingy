@@ -8,7 +8,7 @@ const app = express()
 app.use(express.static('client/dist'));
 app.use(cors())
 
-const alphabet = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
+const alphabet = 'ABCDEFGHIJKLMNPQRSTUVWXYZ';
 const roomRegistry = {}
 
 new WebSocketServer({ server: app.listen(port) })
@@ -124,10 +124,6 @@ app.get('/rooms/:roomId', (req, res) => {
 
 app.get('/rooms', (req, res) => {
   res.send(Object.values(roomRegistry).map(toJson));
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
 });
 
 process.on('SIGINT', () => {
