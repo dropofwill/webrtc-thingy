@@ -11,7 +11,7 @@ app.use(cors())
 const alphabet = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
 const roomRegistry = {}
 
-new WebSocketServer({ port: 8888 })
+new WebSocketServer({ server: app.listen(port) })
   .on('connection', function connection(ws) {
     ws.on('message', function message(data) {
       let d = JSON.parse(data);
